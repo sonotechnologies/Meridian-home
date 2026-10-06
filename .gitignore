@@ -49,3 +49,5 @@ public/uploads/
 /playwright-report/
 !.env.example
 public/maplibre/
+/test-results/
+/playwright-report/

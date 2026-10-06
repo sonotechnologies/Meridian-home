@@ -17,8 +17,8 @@ export const AREAS = [
 ] as const;
 type AreaSlug = (typeof AREAS)[number]["slug"];
 
-export const DEMO_PASSWORD = "meridian-demo";
-export const DEMO_AGENT_EMAIL = "adaeze@demo.meridian.ng";
+import { DEMO_AGENT_EMAIL, DEMO_PASSWORD } from "@/lib/demo";
+export { DEMO_AGENT_EMAIL, DEMO_PASSWORD };
 
 const AGENTS = [
   { name: "Adaeze Okafor", agency: "Coastline Homes", email: DEMO_AGENT_EMAIL, wa: "+2348000000001", areas: ["lekki", "victoria-island"] },

@@ -14,7 +14,8 @@
     "db:seed": "tsx --tsconfig tsconfig.json scripts/seed.ts",
     "db:purge-demo": "tsx --tsconfig tsconfig.json scripts/purge-demo.ts",
     "make-admin": "tsx --tsconfig tsconfig.json scripts/make-admin.ts",
-    "postinstall": "node scripts/copy-maplibre-worker.mjs"
+    "postinstall": "node scripts/copy-maplibre-worker.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@react-email/components": "^1.0.12",
