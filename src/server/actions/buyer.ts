@@ -55,3 +55,23 @@ export async function saveSearch(input: { query: string; bbox?: string | null; a
   revalidatePath("/searches");
   return { ok: true, id: row!.id };
 }
+
+export async function setSearchAlerts(id: string, on: boolean): Promise<{ ok: boolean }> {
+  const user = await getUser();
+  if (!user || !z.string().uuid().safeParse(id).success) return { ok: false };
+  const rows = await db
+    .update(savedSearches)
+    .set({ alertsOn: on, ...(on ? { lastAlertedAt: new Date() } : {}) })
+    .where(and(eq(savedSearches.id, id), eq(savedSearches.userId, user.id)))
+    .returning({ id: savedSearches.id });
+  revalidatePath("/searches");
+  return { ok: rows.length === 1 };
+}
+
+export async function deleteSearch(id: string): Promise<{ ok: boolean }> {
+  const user = await getUser();
+  if (!user || !z.string().uuid().safeParse(id).success) return { ok: false };
+  await db.delete(savedSearches).where(and(eq(savedSearches.id, id), eq(savedSearches.userId, user.id)));
+  revalidatePath("/searches");
+  return { ok: true };
+}

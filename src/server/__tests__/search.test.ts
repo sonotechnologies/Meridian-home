@@ -1,9 +1,13 @@
 import { eq, sql } from "drizzle-orm";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import { seedDemo } from "@/db/seed-data";
 import { db } from "@/db";
 import { listings } from "@/db/schema";
 import { parseFilters } from "@/lib/filters";
 import { getAreas, searchListings } from "../search";
+
+// Each file starts from fresh demo data, so tests don't depend on run order.
+beforeAll(() => seedDemo(db));
 
 const LAGOS: [number, number, number, number] = [3.2, 6.35, 3.65, 6.7];
 

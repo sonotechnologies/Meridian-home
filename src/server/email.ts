@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { Resend } from "resend";
 import { env } from "@/lib/env";
 
-export type Email = { to: string; subject: string; react: ReactElement; text: string };
+export type Email = { to: string; subject: string; react: ReactElement; text: string; headers?: Record<string, string> };
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 
@@ -24,6 +24,7 @@ export async function sendEmail(email: Email): Promise<void> {
     subject: email.subject,
     react: email.react,
     text: email.text,
+    headers: email.headers,
   });
   if (error) throw new Error(`Email to ${email.to} failed: ${error.message}`);
 }
