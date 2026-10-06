@@ -1,26 +1,150 @@
 @import "tailwindcss";
 
+/* Design tokens from the Meridian design brief. Defined as CSS variables so
+   dark mode can be added later by redefining them under a selector. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f6f3ec;
+  --surface: #ffffff;
+  --ink: #10221c;
+  --muted: #5a6661;
+  --line: #ddd8cc;
+  --green: #1f5c4a;
+  --green-tint: #e3ede7;
+  --signal: #c8401f;
+  --amber: #8a5a00;
+  --amber-tint: #e9b949;
+  --danger: #b3261e;
+  --placeholder-a: #ece8de;
+  --placeholder-b: #e5e0d4;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-green: var(--green);
+  --color-green-tint: var(--green-tint);
+  --color-signal: var(--signal);
+  --color-amber: var(--amber);
+  --color-amber-tint: var(--amber-tint);
+  --color-danger: var(--danger);
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --radius-control: 6px;
+  --radius-card: 10px;
+
+  --shadow-float: 0 12px 28px rgba(16, 34, 28, 0.22);
+  --shadow-pin: 0 2px 6px rgba(16, 34, 28, 0.25);
+  --shadow-dialog: 0 20px 48px rgba(16, 34, 28, 0.3);
+  --shadow-toast: 0 8px 20px rgba(16, 34, 28, 0.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 24px;
+  }
+  a {
+    color: var(--green);
+  }
+  a:hover {
+    color: var(--ink);
+  }
+  button {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility placeholder-stripes {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--placeholder-a) 0 8px,
+    var(--placeholder-b) 8px 16px
+  );
+}
+
+@utility label-caps {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@utility contour-bg {
+  background-image: url("/contour.svg");
+  background-size: 640px auto;
+  background-repeat: repeat;
+}
+
+/* Motion: ease-out entering, ease-in leaving. */
+@keyframes pin-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.8);
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes heart-pop {
+  50% {
+    transform: scale(1.25);
+  }
+}
+@keyframes progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(240%);
+  }
+}
+
+.animate-rise-in {
+  animation: rise-in 160ms ease-out;
+}
+.animate-heart-pop {
+  animation: heart-pop 200ms ease-out;
+}
+.animate-progress {
+  animation: progress 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* MapLibre: keep its attribution readable and quiet. */
+.maplibregl-ctrl-attrib {
+  font: 400 11px/16px var(--font-sans);
+  background: rgba(246, 243, 236, 0.85) !important;
+}
+.maplibregl-canvas:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: -2px;
 }
