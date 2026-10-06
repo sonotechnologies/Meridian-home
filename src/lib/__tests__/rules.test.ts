@@ -16,6 +16,8 @@ describe("naira formatting", () => {
     expect(nairaShort(85_000_000)).toBe("₦85M");
     expect(nairaShort(120_000_000)).toBe("₦120M");
     expect(nairaShort(1_000_000)).toBe("₦1M");
+    expect(nairaShort(10_450_000)).toBe("₦10.5M");
+    expect(nairaShort(56_500_000)).toBe("₦56.5M");
     expect(nairaShort(1_200_000_000)).toBe("₦1.2B");
   });
 

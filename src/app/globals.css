@@ -148,3 +148,103 @@
   outline: 2px solid var(--green);
   outline-offset: -2px;
 }
+
+/* ---------- Map pins ----------
+   Default: ink pill. Hovered: green, 108%. Selected: signal, 115%, raised.
+   Viewed: surface fill, ink text, line border. Clusters: green circle. */
+.pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transform-origin: 50% 100%;
+  transition: transform 120ms ease-out;
+  --pin-bg: var(--ink);
+  --pin-fg: #fff;
+  --pin-bd: var(--ink);
+}
+.pin-label {
+  background: var(--pin-bg);
+  color: var(--pin-fg);
+  border: 1px solid var(--pin-bd);
+  font: 500 12px/16px var(--font-mono);
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-pin);
+  transition: background 120ms ease-out, color 120ms ease-out;
+}
+.pin-tail {
+  width: 8px;
+  height: 8px;
+  background: var(--pin-bg);
+  border-right: 1px solid var(--pin-bd);
+  border-bottom: 1px solid var(--pin-bd);
+  transform: rotate(45deg);
+  margin-top: -5px;
+  transition: background 120ms ease-out;
+}
+.pin[data-state="viewed"] {
+  --pin-bg: var(--surface);
+  --pin-fg: var(--ink);
+  --pin-bd: var(--line);
+}
+.pin[data-state="hover"] {
+  --pin-bg: var(--green);
+  --pin-bd: var(--green);
+  transform: scale(1.08);
+}
+.pin[data-state="selected"] {
+  --pin-bg: var(--signal);
+  --pin-bd: var(--signal);
+  transform: scale(1.15);
+}
+.pin:focus-visible {
+  outline: none;
+}
+.pin:focus-visible .pin-label {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  font: 500 12px/16px var(--font-mono);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 120ms ease-out;
+}
+.cluster:hover {
+  transform: scale(1.06);
+}
+.marker-enter > * {
+  animation: marker-in 180ms ease-out;
+}
+.marker-leave > * {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 180ms ease-in, transform 180ms ease-in;
+}
+@keyframes marker-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+.area-label {
+  font: 500 11px/16px var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 0 3px var(--paper), 0 0 3px var(--paper);
+}

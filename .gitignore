@@ -48,3 +48,4 @@ public/uploads/
 /test-results/
 /playwright-report/
 !.env.example
+public/maplibre/

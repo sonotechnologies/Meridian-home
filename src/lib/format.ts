@@ -13,8 +13,8 @@ export function nairaShort(n: number): string {
   for (const [size, suffix] of units) {
     if (n >= size) {
       const v = n / size;
-      // One decimal under 10 (₦2.5M), whole numbers above (₦85M, ₦850K).
-      const s = v < 10 ? (Math.round(v * 10) / 10).toString() : Math.round(v).toString();
+      // One decimal under 100 when it matters (₦2.5M, ₦10.5M), whole numbers otherwise (₦85M, ₦850K).
+      const s = v < 100 ? (Math.round(v * 10) / 10).toString() : Math.round(v).toString();
       return `₦${s}${suffix}`;
     }
   }

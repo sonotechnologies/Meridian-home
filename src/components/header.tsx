@@ -23,9 +23,11 @@ export async function Header({ back }: { back?: { href: string; label: string } 
         ) : null}
       </div>
       <nav aria-label="Account" className="flex items-center gap-3">
-        <ButtonLink href={listHref} variant="tertiary" size="sm" className="hidden sm:inline-flex">
-          List a property
-        </ButtonLink>
+        <span className="hidden sm:block">
+          <ButtonLink href={listHref} variant="tertiary" size="sm">
+            List a property
+          </ButtonLink>
+        </span>
         {user ? (
           <AccountMenu name={user.name} role={user.role} />
         ) : (
