@@ -248,3 +248,14 @@
   pointer-events: none;
   text-shadow: 0 0 3px var(--paper), 0 0 3px var(--paper);
 }
+
+/* Landing: the one scroll-free motion, pins fading in on the hero map. */
+@keyframes hero-pin {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.8);
+  }
+}
+.hero-pin {
+  animation: hero-pin 400ms ease-out backwards;
+}
