@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { PROPERTY_TYPES, PROPERTY_LABEL, TYPE_LABEL, naira, type ListingType, type PropertyType } from "@/lib/format";
-import { PRICE_PRESETS, PRICE_RANGE, priceLabel, type Filters } from "@/lib/filters";
+import { PRICE_PRESETS, PRICE_RANGE, priceLabel } from "@/lib/filter-params";
+import type { Filters } from "@/lib/filters";
 import { Icon } from "../icon";
 import { chipClass, cx, inputClass } from "../ui";
 

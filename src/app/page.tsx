@@ -63,7 +63,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
             style={{ backgroundImage: "url(/basemap.svg)", backgroundSize: "cover", backgroundPosition: "center" }}
           >
             {LABELS.map(([x, y, t]) => (
-              <span key={t} className="area-label absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${x}%`, top: `${y}%` }}>
+              <span key={t} className="area-label absolute hidden -translate-x-1/2 -translate-y-1/2 sm:block" style={{ left: `${x}%`, top: `${y}%` }}>
                 {t}
               </span>
             ))}

@@ -119,8 +119,12 @@ export function ListingForm({
         return;
       }
       if (!id) {
+        // The draft now exists: move to its edit route straight away. Rewriting the URL in
+        // place would let a later server-action refresh swap routes and remount the form
+        // mid-typing, losing input.
         setId(r.id);
-        window.history.replaceState(null, "", `/dashboard/listings/${r.id}/edit?step=2`);
+        router.replace(`/dashboard/listings/${r.id}/edit?step=2`);
+        return;
       }
       setSavedAt(new Date().toLocaleTimeString("en-NG", { hour: "numeric", minute: "2-digit" }));
       setMaxStep((m) => Math.max(m, n + 1));

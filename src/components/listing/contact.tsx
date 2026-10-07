@@ -21,8 +21,22 @@ export type ContactListing = {
 
 /** "WhatsApp agent" (signal, the one primary button) and "Request a call-back". */
 export function ContactButtons({ l, layout }: { l: ContactListing; layout: "stack" | "bar" }) {
-  const [modal, setModal] = useState<"wa" | "call" | null>(null);
+  const [modal, setModal] = useState<"wa" | "call" | "demo" | null>(null);
+  const [opening, start] = useTransition();
+  const toast = useToast();
   const first = l.agentName.split(" ")[0];
+
+  /**
+   * Mobile bottom bar: straight to WhatsApp, no preview dialog, so a visitor gets
+   * from the landing page to a message in four taps. The lead is logged first.
+   */
+  const whatsappNow = () =>
+    start(async () => {
+      const r = await startWhatsApp(l.slug);
+      if (!r.ok) return toast(r.error);
+      if (r.demo || !r.url) return setModal("demo");
+      window.location.href = r.url;
+    });
   return (
     <>
       {layout === "stack" ? (
@@ -41,15 +55,26 @@ export function ContactButtons({ l, layout }: { l: ContactListing; layout: "stac
           <Button onClick={() => setModal("call")} aria-label="Request a call-back" className="w-12 flex-none px-0">
             <Icon n="phone" size={18} />
           </Button>
-          <Button variant="primary" size="lg" className="flex-1" onClick={() => setModal("wa")}>
+          <Button variant="primary" size="lg" className="flex-1" disabled={opening} onClick={whatsappNow}>
             <Icon n="message" size={18} />
             WhatsApp agent
           </Button>
         </div>
       )}
       {modal === "wa" ? <WhatsAppDialog l={l} first={first} onClose={() => setModal(null)} /> : null}
+      {modal === "demo" ? <SampleNotice onClose={() => setModal(null)} /> : null}
       {modal === "call" ? <CallbackDialog l={l} first={first} onClose={() => setModal(null)} /> : null}
     </>
+  );
+}
+
+function SampleNotice({ onClose }: { onClose: () => void }) {
+  return (
+    <Dialog title="This is a sample listing" onClose={onClose} footer={<Button variant="secondary" onClick={onClose}>OK</Button>}>
+      <p className="m-0 text-[15px] leading-[22px]">
+        Sample listings show how Meridian works, so WhatsApp won’t open. On a real listing, this message goes straight to the agent’s WhatsApp and the enquiry shows up in their leads.
+      </p>
+    </Dialog>
   );
 }
 
@@ -59,15 +84,7 @@ function WhatsAppDialog({ l, first, onClose }: { l: ContactListing; first: strin
   const toast = useToast();
   const message = whatsappMessage(l);
 
-  if (demoNotice) {
-    return (
-      <Dialog title="This is a sample listing" onClose={onClose} footer={<Button variant="secondary" onClick={onClose}>OK</Button>}>
-        <p className="m-0 text-[15px] leading-[22px]">
-          Sample listings show how Meridian works, so WhatsApp won’t open. On a real listing, this message goes straight to the agent’s WhatsApp and the enquiry shows up in their leads.
-        </p>
-      </Dialog>
-    );
-  }
+  if (demoNotice) return <SampleNotice onClose={onClose} />;
 
   return (
     <Dialog

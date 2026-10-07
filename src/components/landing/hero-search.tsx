@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
-import { filtersToParams, PRICE_PRESETS } from "@/lib/filters";
+import { filtersToParams, PRICE_PRESETS } from "@/lib/filter-params";
 import type { ListingType } from "@/lib/format";
 import { Icon } from "../icon";
 import { TypeToggle } from "../search/filters";

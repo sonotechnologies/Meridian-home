@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { db } from "@/db";
-import { account, session, users, verification } from "@/db/schema";
+import { account, rateLimit, session, users, verification } from "@/db/schema";
 import { env } from "@/lib/env";
 
 const google =
@@ -17,7 +17,7 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
     provider: "pg",
-    schema: { users, session, account, verification },
+    schema: { users, session, account, verification, rateLimit },
   }),
   emailAndPassword: { enabled: true, minPasswordLength: 8 },
   socialProviders: google,
@@ -34,6 +34,8 @@ export const auth = betterAuth({
   session: {
     cookieCache: { enabled: true, maxAge: 60 },
   },
+  // Stored in Postgres: in-memory counters would be per serverless instance on Vercel.
+  rateLimit: { enabled: process.env.NODE_ENV === "production", storage: "database", window: 60, max: 100 },
   plugins: [nextCookies()],
 });
 

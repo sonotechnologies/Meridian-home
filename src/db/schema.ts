@@ -121,6 +121,14 @@ export const verification = pgTable("verification", {
   ...timestamps,
 });
 
+/** Better Auth's rate-limit counters, in the database so limits hold across serverless instances. */
+export const rateLimit = pgTable("rate_limit", {
+  id: text("id").primaryKey(),
+  key: text("key").notNull().unique(),
+  count: integer("count").notNull(),
+  lastRequest: bigint("last_request", { mode: "number" }).notNull(),
+});
+
 /* ---------- Agents and areas ---------- */
 
 export const agentProfiles = pgTable(

@@ -3,6 +3,8 @@ import { expect, test } from "@playwright/test";
 test("a buyer saves a home and a search, then manages alerts", async ({ page }) => {
   // Signed out: the heart sends you to sign in.
   await page.goto("/search?area=lekki");
+  // Wait until the page is interactive (the map only mounts after hydration).
+  await expect(page.locator(".maplibregl-canvas")).toBeAttached({ timeout: 20_000 });
   await page.getByRole("button", { name: "Save to favourites" }).first().click();
   await expect(page).toHaveURL(/\/login\?next=.*reason=save/);
   await expect(page.getByText("Sign in to save homes")).toBeVisible();
